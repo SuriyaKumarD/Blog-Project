@@ -1,17 +1,17 @@
-import { Client, ID } from "appwrite";
-import { config } from "../config/config";
+import { Client, ID, Storage } from "appwrite";
+import config from "../config/config";
 
 export class File {
   client = new Client();
-  bucket;
+  buckets;
   constructor() {
     this.client.setEndpoint(config.APPWRITE_URL).setProject(config.PROJECT_ID);
-    this.bucket = new Storage(this.client);
+    this.buckets = new Storage(this.client);
   }
 
   async uploadFile(file) {
     try {
-      return await this.bucket.createFile(config.BUCKET_ID, ID.unique(), file);
+      return await this.buckets.createFile(config.BUCKET_ID, ID.unique(), file);
     } catch (error) {
       console.log("error in uploadFile", error);
     }
@@ -19,7 +19,7 @@ export class File {
 
   async deleteFile(fileId) {
     try {
-      await this.bucket.deleteFile(config.BUCKET_ID, fileId);
+      await this.buckets.deleteFile(config.BUCKET_ID, fileId);
       return true;
     } catch (error) {
       console.log("error in deleteFile", error);
@@ -29,7 +29,12 @@ export class File {
 
   async preview(fileId) {
     try {
-      return await this.bucket.getFilePreview(config.BUCKET_ID, fileId);
+      var response = await this.buckets.getFilePreview(
+        config.BUCKET_ID,
+        fileId
+      );
+      console.log("response in preview", response);
+      return response;
     } catch (error) {
       console.log("error in preview", error);
     }

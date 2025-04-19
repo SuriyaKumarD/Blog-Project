@@ -7,14 +7,14 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const authStatus = useSelector((state) => state.auth);
+  const authStatus = useSelector((state) => state.auth?.status);
   const navigate = useNavigate();
 
   const navItems = [
     {
       name: "Home",
       slug: "/",
-      active: authStatus,
+      active: true,
     },
     {
       name: "Login",
@@ -23,18 +23,18 @@ function Header() {
     },
     {
       name: "SignUp",
-      slug: "/SignUp",
+      slug: "/signup",
       active: !authStatus,
     },
     {
       name: "All Posts",
-      slug: "/all-posts",
-      active: !authStatus,
+      slug: "/allposts",
+      active: authStatus,
     },
     {
-      name: "Add Login",
-      slug: "/",
-      active: !authStatus,
+      name: "Add Posts",
+      slug: "/addposts",
+      active: authStatus,
     },
   ];
   return (
